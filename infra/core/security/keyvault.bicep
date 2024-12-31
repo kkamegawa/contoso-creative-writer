@@ -5,7 +5,7 @@ param tags object = {}
 
 param principalId string = ''
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' = {
   name: name
   location: location
   tags: tags

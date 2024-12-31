@@ -11,7 +11,7 @@ param enabled bool = true
 param exp int = 0
 param nbf int = 0
 
-resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' = {
   name: name
   tags: tags
   parent: keyVault
@@ -26,6 +26,6 @@ resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+resource keyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' existing = {
   name: keyVaultName
 }

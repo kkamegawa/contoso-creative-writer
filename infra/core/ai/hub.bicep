@@ -33,7 +33,7 @@ param publicNetworkAccess string = 'Enabled'
 param location string = resourceGroup().location
 param tags object = {}
 
-resource hub 'Microsoft.MachineLearningServices/workspaces@2024-01-01-preview' = {
+resource hub 'Microsoft.MachineLearningServices/workspaces@2024-10-01' = {
   name: name
   location: location
   tags: tags
@@ -110,11 +110,11 @@ resource hub 'Microsoft.MachineLearningServices/workspaces@2024-01-01-preview' =
     }
 }
 
-resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
+resource openAi 'Microsoft.CognitiveServices/accounts@2024-10-01' existing = {
   name: openAiName
 }
 
-resource search 'Microsoft.Search/searchServices@2021-04-01-preview' existing =
+resource search 'Microsoft.Search/searchServices@2024-06-01-preview' existing =
   if (!empty(aiSearchName)) {
     name: aiSearchName
   }

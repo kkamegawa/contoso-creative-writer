@@ -10,7 +10,7 @@ var roleDefinitionId = guid('sql-role-definition-', principalId, databaseAccount
 var roleAssignmentId = guid(roleDefinitionId, principalId, databaseAccountId)
 ///subscriptions/070de2d1-125e-447f-8caf-511f7a99f764/resourceGroups/chatcontoso-rg/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-contoso-qceliatc7cgpq/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002
 
-resource sqlRoleAssignment 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2023-04-15' = {
+resource sqlRoleAssignment 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2024-12-01-preview' = {
   name: '${databaseAccountName}/${roleAssignmentId}'
   //parent: databaseAccount
   properties:{

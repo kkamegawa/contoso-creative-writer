@@ -9,7 +9,7 @@ param keyVaultName string
 param kind string = 'Managed'
 param authMode string = 'Key'
 
-resource endpoint 'Microsoft.MachineLearningServices/workspaces/onlineEndpoints@2023-10-01' = {
+resource endpoint 'Microsoft.MachineLearningServices/workspaces/onlineEndpoints@2024-10-01' = {
   name: name
   location: location
   parent: workspace
@@ -68,11 +68,11 @@ module keyVaultAccess '../security/keyvault-access.bicep' = {
   }
 }
 
-resource hubWorkspace 'Microsoft.MachineLearningServices/workspaces@2023-08-01-preview' existing = {
+resource hubWorkspace 'Microsoft.MachineLearningServices/workspaces@2024-10-01' existing = {
   name: aiHubName
 }
 
-resource workspace 'Microsoft.MachineLearningServices/workspaces@2023-08-01-preview' existing = {
+resource workspace 'Microsoft.MachineLearningServices/workspaces@2024-10-01' existing = {
   name: aiProjectName
 }
 
