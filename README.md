@@ -72,6 +72,14 @@ This project template provides the following features:
     - We recommend using `eastus2`, as this region has access to all models and services required. 
 * **Azure subscription with access enabled for [Bing Search API](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)**
 * **Azure subscription with access enabled for [Azure AI Search](https://azure.microsoft.com/en-gb/products/ai-services/ai-search)**
+* Register Azure Resource Provider
+
+```
+az provider register Microsoft.Apps
+az provider register Microsoft.Bing
+az provider register Microsoft.MachineLearningServices
+az provider register Microsoft.CognitiveServices
+```
 
 ## Getting Started
 
