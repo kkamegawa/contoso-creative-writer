@@ -69,7 +69,7 @@ export const Task = () => {
           Research
         </label>
         <p className="mt-1 text-sm leading-6 text-gray-400">
-          What kinds of things should I find?
+          何について調べればいいでしょうか？
         </p>
         <div className="mt-2">
           <div className=" flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600">
@@ -94,7 +94,7 @@ export const Task = () => {
           Products
         </label>
         <p className="mt-1 text-sm leading-6 text-gray-400">
-          What products should I look at?
+          どんな製品について調べればいいでしょうか？
         </p>
         <div className="mt-2">
           <textarea
@@ -116,7 +116,7 @@ export const Task = () => {
           Assignment
         </label>
         <p className="mt-1 text-sm leading-6 text-gray-400">
-          What kind of writing should I do?
+          どのような形式で何を書けばいいでしょうか？
         </p>
         <div className="mt-2">
           <textarea
@@ -137,7 +137,7 @@ export const Task = () => {
           onClick={reset}
         >
           <ArrowPathIcon className="w-6" />
-          <span>Reset</span>
+          <span>リセット</span>
         </button>
         <button
           type="button"
@@ -145,7 +145,7 @@ export const Task = () => {
           onClick={setExample}
         >
           <ClipboardDocumentIcon className="w-6" />
-          <span>Example</span>
+          <span>サンプル</span>
         </button>
         <button
           type="button"
@@ -153,7 +153,7 @@ export const Task = () => {
           onClick={startWork}
         >
           <PaperAirplaneIcon className="w-6" />
-          <span>Start Work</span>
+          <span>作成開始</span>
         </button>
       </div>
     </div>
