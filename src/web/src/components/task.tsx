@@ -18,11 +18,11 @@ export const Task = () => {
 
   const setExample = () => {
     setResearch(
-      "Can you find the latest camping trends and what folks are doing in the winter?"
+      "この冬注目されている最新のキャンプトレンドについて調べてください。"
     );
-    setProducts("Can you use a selection of tents and sleeping bags as context?");
+    setProducts("テントと寝袋のセレクションをコンテキストとして使用できますか？");
     setWriting(
-      "Write a fun and engaging article that includes the research and product information. The article should be between 800 and 1000 words. Make sure to cite sources in the article as you mention the research not at the end."
+      "調査結果と製品情報を含む楽しく魅力的な記事を書いてください。記事の長さは日本語で1000文字以内にしてください。調査結果を記事内で言及する際に、末尾ではなくその都度出典を明記してください。"
     );
   };
 
