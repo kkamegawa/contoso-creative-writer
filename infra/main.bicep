@@ -25,8 +25,6 @@ param applicationInsightsName string = ''
 param openAiName string = ''
 @description('The Open AI connection name. If ommited will use a default value')
 param openAiConnectionName string = ''
-@description('The Open AI content safety connection name. If ommited will use a default value')
-param openAiContentSafetyConnectionName string = ''
 param keyVaultName string = ''
 @description('The Azure Storage Account resource name. If ommited will be generated')
 param storageAccountName string = ''
@@ -56,8 +54,11 @@ param openAiType string = 'azure'
 @description('The name of the search service')
 param searchServiceName string = ''
 
+@description('The Bing resource name. If ommited will be generated')
+param bingName string = ''
+
 @description('The name of the bing search service')
-param bingSearchName string = ''
+param bingConnectionName string = ''
 
 @description('The name of the AI search index')
 param aiSearchIndexName string = 'contoso-products'
@@ -116,7 +117,6 @@ module ai 'core/host/ai-environment.bicep' = {
       : '${abbrs.storageStorageAccounts}${resourceToken}'
     openAiName: !empty(openAiName) ? openAiName : 'aoai-${resourceToken}'
     openAiConnectionName: !empty(openAiConnectionName) ? openAiConnectionName : 'aoai-connection'
-    openAiContentSafetyConnectionName: !empty(openAiContentSafetyConnectionName) ? openAiContentSafetyConnectionName : 'aoai-content-safety-connection'
     openAiModelDeployments: array(contains(aiConfig, 'deployments') ? aiConfig.deployments : [])
     logAnalyticsName: !useApplicationInsights
       ? ''
@@ -131,17 +131,19 @@ module ai 'core/host/ai-environment.bicep' = {
       : !empty(containerRegistryName) ? containerRegistryName : '${abbrs.containerRegistryRegistries}${resourceToken}'
     searchServiceName: !useSearch ? '' : !empty(searchServiceName) ? searchServiceName : '${abbrs.searchSearchServices}${resourceToken}'
     searchConnectionName: !useSearch ? '' : !empty(searchConnectionName) ? searchConnectionName : 'search-service-connection'
+    bingName: !empty(bingName) ? bingName : 'agent-bing-search'
+    bingConnectionName: !empty(bingConnectionName) ? bingConnectionName : 'bing-connection'
   }
 }
 
-module bing 'core/bing/bing-search.bicep' = {
-  name: 'bing'
-  scope: resourceGroup
-  params: {
-    name: 'agent-bing-search'
-    location: 'global'
-  }
-}
+// module bing 'core/bing/bing-search.bicep' = {
+//   name: 'bing'
+//   scope: resourceGroup
+//   params: {
+//     name: 'agent-bing-search'
+//     location: 'global'
+//   }
+// }
 
 // Container apps host (including container registry)
 module containerApps 'core/host/container-apps.bicep' = {
@@ -163,6 +165,7 @@ module apiContainerApp 'app/api.bicep' = {
   params: {
     name: 'agent-api'
     location: location
+    resourceGroupName: resourceGroup.name
     tags: tags
     identityName: managedIdentity.outputs.managedIdentityName
     identityId: managedIdentity.outputs.managedIdentityClientId
@@ -178,8 +181,11 @@ module apiContainerApp 'app/api.bicep' = {
     aiSearchEndpoint: ai.outputs.searchServiceEndpoint
     aiSearchIndexName: aiSearchIndexName
     appinsights_Connectionstring: ai.outputs.applicationInsightsConnectionString
-    bingApiEndpoint: bing.outputs.endpoint
-    bingApiKey: bing.outputs.bingApiKey
+    bingName: ai.outputs.bingName
+    bingApiEndpoint: ai.outputs.bingEndpoint
+    bingApiKey: ai.outputs.bingApiKey
+    aiProjectName: ai.outputs.projectName
+    subscriptionId: subscription().subscriptionId
   }
 }
 
@@ -208,13 +214,32 @@ module aiSearchRole 'core/security/role.bicep' = {
   }
 }
 
-
 module appinsightsAccountRole 'core/security/role.bicep' = {
   scope: resourceGroup
   name: 'appinsights-account-role'
   params: {
     principalId: managedIdentity.outputs.managedIdentityPrincipalId
     roleDefinitionId: '3913510d-42f4-4e42-8a64-420c390055eb' // Monitoring Metrics Publisher
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module MlDataScientistRole 'core/security/role.bicep' = {
+  scope: resourceGroup
+  name: 'ml-datascientist-role'
+  params: {
+    principalId: managedIdentity.outputs.managedIdentityPrincipalId
+    roleDefinitionId: 'f6c7c914-8db3-469d-8ca1-694a8f32e121' // Data Scientist Role 
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module appinsightsAccountReaderRole 'core/security/role.bicep' = {
+  scope: resourceGroup
+  name: 'appinsights-account-reader-role'
+  params: {
+    principalId: managedIdentity.outputs.managedIdentityPrincipalId
+    roleDefinitionId: '43d0d8ad-25c7-4714-9337-8ba259a9fe05' // Monitoring Reader
     principalType: 'ServicePrincipal'
   }
 }
@@ -301,7 +326,6 @@ output AZURE_EMBEDDING_NAME string = openAiEmbeddingDeploymentName
 output AZURE_SEARCH_ENDPOINT string = ai.outputs.searchServiceEndpoint
 output AZURE_SEARCH_NAME string = ai.outputs.searchServiceName
 
-output BING_SEARCH_ENDPOINT string = bing.outputs.endpoint
-output BING_SEARCH_KEY string = bing.outputs.bingApiKey
-
-
+output BING_SEARCH_ENDPOINT string = ai.outputs.bingEndpoint
+output BING_SEARCH_NAME string = ai.outputs.bingName
+output BING_SEARCH_KEY string = ai.outputs.bingApiKey
